@@ -15,7 +15,7 @@ compatibility/default_parent_skeleton_in_mesh_instance_3d=true
 [application]
 
 config/name="MK-TournamentCalc"
-run/main_scene="uid://c2jf1o5x2j0pv"
+run/main_scene="uid://62ifqgv1d1lk"
 config/features=PackedStringArray("4.6", "GL Compatibility")
 config/icon="res://icon.svg"
 
@@ -25,8 +25,7 @@ buses/default_bus_layout="res://scenes/default_bus_layout.tres"
 
 [autoload]
 
-Globals="*res://autoloads/Globals.gd"
-SceneManager="*res://autoloads/SceneManager.gd"
+Global="*uid://di2csjrq02ohx"
 
 [editor_plugins]
 
