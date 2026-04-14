@@ -1,0 +1,8 @@
+[gd_scene format=3 uid="uid://cltyevvr0wip0"]
+
+[ext_resource type="Script" uid="uid://0go7i3vqkc3j" path="res://scripts/swiss_round_simulation.gd" id="1_0yyyu"]
+
+[node name="SwissRoundSimulation" type="Node" unique_id=1128173958]
+script = ExtResource("1_0yyyu")
+number_of_rounds = 4
+player_count = 47

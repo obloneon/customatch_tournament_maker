@@ -1,4 +1,4 @@
-class_name SwissRound
+class_name SwissRoundBackup
 extends Resource
 
 
@@ -18,80 +18,8 @@ func _init(
 	station_count = round_station_count
 	special_stations_count = round_special_stations_count
 
-## Trys to fill all players into matches with similar player strength. If player
-## count is uneven this can result in the top seeded match to be not filled completly.
+
 func assign_players_to_matches(players: Array[Player]) -> Array[Match]:
-	if players.size() < match_size:
-		push_error(
-			"Player assignment failed: Player list contains less than %d players" % match_size
-		)
-		return []
-			 
-	var empty_matches: Array[Match] = _create_matches(players.size())
-	var filled_matches: Array[Match] = []
-	var player_pools: Dictionary[int, Array] = {} # Array is Array[Player]
-	# pool creation
-	if swiss_round_number == 1:
-		player_pools[0] = players.duplicate_deep()
-	else:
-		for player in players:
-			if player_pools.has(player.wins):
-				player_pools[player.wins].append(player)
-			else:
-				player_pools[player.wins] = [player]
-	# pool balancing
-	var pool_keys = player_pools.keys()
-	pool_keys.sort()
-	for i in range(pool_keys.size()):
-		var player_pool = player_pools[pool_keys[i]]
-		# steal the worst players from the next pools until this pool is divisible into full matches
-		while player_pool.size() % match_size != 0:
-			for j in range(i + 1, pool_keys.size()):
-				var next_pool = player_pools[pool_keys[j]]
-				if next_pool.size() > 0:
-					var worst_player_index: int = 0
-					for k in range(1, next_pool.size()):
-						if next_pool[worst_player_index].points > next_pool[k].points:
-							worst_player_index = k
-					player_pool.append(HelperFunctions.swap_pop(next_pool, worst_player_index))
-					break
-			break
-	for key in player_pools.keys():
-		var player_pool = player_pools[key]
-		while empty_matches.size() > 0 and player_pool.size() > 0:
-			var empty_match = empty_matches[0]
-			var fitting_player
-			if swiss_round_number > 1:
-				var fitting_index: int = _find_suitable_player_index(empty_match, player_pool)
-				fitting_player = HelperFunctions.swap_pop(player_pool, fitting_index)
-				if fitting_player == null:
-					push_warning(
-						"Player assignment failed: No fitting player in 
-						bounds of current player pool: " + player_pool
-						)
-					break
-			else:
-				fitting_player = player_pool.pop_front()
-			empty_match.players.append(fitting_player)
-			if empty_match.players.size() == match_size:
-				var filled_match = empty_matches.pop_front()
-				filled_matches.append(filled_match)
-	if filled_matches.size() == 0:
-		push_warning("Player assignment failed: No matches were filled")
-		return []
-	# check result
-	var total_assigned_players: int = 0
-	for filled_match in filled_matches:
-		total_assigned_players += filled_match.players.size()
-	if total_assigned_players != players.size():
-		push_error("Player assignment failed: Not all players were assigned")
-		return []
-	return filled_matches
-
-
-## @experimental: This creates more matches than needed to fit all players because
-## this keeps player pools from mixing.
-func _assign_players_to_matches_without_crossing_pools(players: Array[Player]) -> Array[Match]:
 	if players.size() < 2:
 		push_error("Player assignment failed: Player list contains less than 2 players")
 		return []
@@ -111,14 +39,6 @@ func _assign_players_to_matches_without_crossing_pools(players: Array[Player]) -
 	# match filling
 	for key in player_pools.keys():
 		var player_pool = player_pools[key]
-		# If not all player fit into the original matches add further ones too keep matches from crossing pools
-		if balanced_matches.size() == ceil(float(players.size()) / match_size) and empty_matches.is_empty():
-				var total_players: int = 0
-				for balanced_match in balanced_matches:
-					total_players += balanced_match.players.size()
-				var missing_players: int = players.size() - total_players 
-				if missing_players != 0:
-					empty_matches.append_array(_create_matches(missing_players))
 		while empty_matches.size() > 0 and player_pool.size() > 0:
 			var empty_match = empty_matches[0]
 			var fill_range: int = min(match_size, player_pool.size())
@@ -140,6 +60,14 @@ func _assign_players_to_matches_without_crossing_pools(players: Array[Player]) -
 			filled_matches.append(filled_match)
 		if filled_matches.size() == 0:
 			push_warning("Player assignment failed: No matches were filled")
+			if balanced_matches.size() == ceil(float(players.size()) / match_size):
+				var total_players: int = 0
+				for balanced_match in balanced_matches:
+					total_players += balanced_match.players.size()
+					if total_players != players.size():
+						push_error("Player assignment failed: Not all players were assigned")
+						return []
+					return balanced_matches
 			return []
 		# match balancing
 		if match_size > 2:
