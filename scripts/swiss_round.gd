@@ -18,75 +18,38 @@ func _init(
 	station_count = round_station_count
 	special_stations_count = round_special_stations_count
 
-## Trys to fill all players into matches with similar player strength. If player
-## count is uneven this can result in the top seeded match to be not filled completly.
+
+## Trys to fill all players into matches based on the suitability score calculation. 
 func assign_players_to_matches(players: Array[Player]) -> Array[Match]:
-	if players.size() < match_size:
+	if players.size() < 2:
 		push_error(
-			"Player assignment failed: Player list contains less than %d players" % match_size
+			"Player assignment failed: Player list contains less than 2 players"
 		)
 		return []
 			 
-	var empty_matches: Array[Match] = _create_matches(players.size())
-	var filled_matches: Array[Match] = []
-	var player_pools: Dictionary[int, Array] = {} # Array is Array[Player]
+	var new_matches: Array[Match] = _create_matches(players.size())
+	var total_players = players.size()
+	var total_assigned_players: int = 0
 	# pool creation
 	if swiss_round_number == 1:
-		player_pools[0] = players.duplicate_deep()
+		for new_match in new_matches:
+			var needed_players: int = match_size
+			while players.size() > 0 and needed_players > 0:
+				new_match.players.append(players.pop_back())
+				total_assigned_players += 1
+				needed_players -= 1
 	else:
-		for player in players:
-			if player_pools.has(player.wins):
-				player_pools[player.wins].append(player)
-			else:
-				player_pools[player.wins] = [player]
-	# pool balancing
-	var pool_keys = player_pools.keys()
-	pool_keys.sort()
-	for i in range(pool_keys.size()):
-		var player_pool = player_pools[pool_keys[i]]
-		# steal the worst players from the next pools until this pool is divisible into full matches
-		while player_pool.size() % match_size != 0:
-			for j in range(i + 1, pool_keys.size()):
-				var next_pool = player_pools[pool_keys[j]]
-				if next_pool.size() > 0:
-					var worst_player_index: int = 0
-					for k in range(1, next_pool.size()):
-						if next_pool[worst_player_index].points > next_pool[k].points:
-							worst_player_index = k
-					player_pool.append(HelperFunctions.swap_pop(next_pool, worst_player_index))
-					break
-			break
-	for key in player_pools.keys():
-		var player_pool = player_pools[key]
-		while empty_matches.size() > 0 and player_pool.size() > 0:
-			var empty_match = empty_matches[0]
-			var fitting_player
-			if swiss_round_number > 1:
-				var fitting_index: int = _find_suitable_player_index(empty_match, player_pool)
-				fitting_player = HelperFunctions.swap_pop(player_pool, fitting_index)
-				if fitting_player == null:
-					push_warning(
-						"Player assignment failed: No fitting player in 
-						bounds of current player pool: " + player_pool
-						)
-					break
-			else:
-				fitting_player = player_pool.pop_front()
-			empty_match.players.append(fitting_player)
-			if empty_match.players.size() == match_size:
-				var filled_match = empty_matches.pop_front()
-				filled_matches.append(filled_match)
-	if filled_matches.size() == 0:
-		push_warning("Player assignment failed: No matches were filled")
-		return []
-	# check result
-	var total_assigned_players: int = 0
-	for filled_match in filled_matches:
-		total_assigned_players += filled_match.players.size()
-	if total_assigned_players != players.size():
+		for new_match in new_matches:
+			var needed_players: int = match_size
+			while players.size() > 0 and needed_players > 0:
+				var suitable_player_idx = _find_suitable_player_index(new_match, players)
+				new_match.players.append(HelperFunctions.swap_pop(players, suitable_player_idx))
+				total_assigned_players += 1
+				needed_players -= 1
+	if total_assigned_players != total_players:
 		push_error("Player assignment failed: Not all players were assigned")
 		return []
-	return filled_matches
+	return new_matches
 
 
 ## @experimental: This creates more matches than needed to fit all players because
@@ -236,16 +199,21 @@ func _find_suitable_player_index(current_match: Match, player_pool: Array) -> in
 ## Higher Score == Higher suitability
 func _calculate_suitability(player: Player, current_match: Match) -> int:
 	var score: int = 0
+	var players_in_match_count: int = current_match.players.size()
 	# prefer players who haven't played at a special station if match is at a special station
 	if current_match.station.is_special_station:
 		if not player.played_at_special_station:
-			score += 10
+			score += 15 + players_in_match_count
 	# penalize number of conflicts with current players
+	# prefer players with the same or similar points
 	var conflicts: int = 0
+	var point_differential: int = 0
 	for match_player in current_match.players:
+		point_differential += abs(player.points - match_player.points)
 		if player.played_against.has(match_player):
 			conflicts += 1
-	score += max(0, match_size - conflicts)
+	score += max(0, 10 + players_in_match_count - conflicts)
+	score += max(0, 5 + players_in_match_count - point_differential)
 	return score
 
 

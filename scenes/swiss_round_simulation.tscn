@@ -5,4 +5,3 @@
 [node name="SwissRoundSimulation" type="Node" unique_id=1128173958]
 script = ExtResource("1_0yyyu")
 number_of_rounds = 4
-player_count = 47
