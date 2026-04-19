@@ -1,6 +1,13 @@
 [gd_scene format=3 uid="uid://62ifqgv1d1lk"]
 
 [ext_resource type="Script" uid="uid://b6mtecr6cur5b" path="res://scripts/main.gd" id="1_o5qli"]
+[ext_resource type="PackedScene" uid="uid://d1u35xwyms7dj" path="res://scenes/ui/player_import.tscn" id="2_0wfyh"]
 
 [node name="Main" type="Node" unique_id=1289657067]
 script = ExtResource("1_o5qli")
+
+[node name="ContentLayer" type="CanvasLayer" parent="." unique_id=261071823]
+
+[node name="PlayerImport" parent="." unique_id=1571288498 instance=ExtResource("2_0wfyh")]
+
+[node name="Settings" type="CanvasLayer" parent="." unique_id=1606694347]

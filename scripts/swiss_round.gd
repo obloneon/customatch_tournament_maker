@@ -19,7 +19,7 @@ func _init(
 	special_stations_count = round_special_stations_count
 
 
-## Trys to fill all players into matches based on the suitability score calculation. 
+## Tries to fill all players into matches based on the suitability score calculation. 
 func assign_players_to_matches(players: Array[Player]) -> Array[Match]:
 	if players.size() < 2:
 		push_error(
@@ -168,6 +168,19 @@ func _assign_players_to_matches_without_crossing_pools(players: Array[Player]) -
 	return balanced_matches
 
 
+## Returns the [Player]s in this match. If non are found then an empty Array is
+## returned instead.
+func get_players() -> Array[Player]:
+	var players_array: Array[Player] = []
+	for swiss_match in matches:
+		if swiss_match == null:
+			continue
+		for player in swiss_match.players:
+			if player != null:
+				players_array.append(player)
+	return players_array
+
+
 func _create_matches(number_of_players: int) -> Array[Match]:
 	var created_matches: Array[Match] = []
 	var needed_matches: int = ceil(float(number_of_players) / match_size)
@@ -203,14 +216,18 @@ func _calculate_suitability(player: Player, current_match: Match) -> int:
 	# prefer players who haven't played at a special station if match is at a special station
 	if current_match.station.is_special_station:
 		if not player.played_at_special_station:
-			score += 15 + players_in_match_count
+			score += 16 + players_in_match_count
+	# penalize players who haven't played at a special station if match is not at a special station
+	if not current_match.station.is_special_station:
+		if not player.played_at_special_station:
+			score -= 15 + players_in_match_count
 	# penalize number of conflicts with current players
 	# prefer players with the same or similar points
 	var conflicts: int = 0
 	var point_differential: int = 0
 	for match_player in current_match.players:
 		point_differential += abs(player.points - match_player.points)
-		if player.played_against.has(match_player):
+		if player.played_against.has(match_player.name):
 			conflicts += 1
 	score += max(0, 10 + players_in_match_count - conflicts)
 	score += max(0, 5 + players_in_match_count - point_differential)
@@ -218,12 +235,14 @@ func _calculate_suitability(player: Player, current_match: Match) -> int:
 
 
 ## Returns an error if it fails else returns OK
-func save() -> String:
-	var error = ResourceSaver.save(self)
+func save(save_path: String = "") -> String:
+	if save_path == null or save_path == "":
+		save_path = self.resource_path
+	var error = ResourceSaver.save(self, save_path)
 	if error == OK:
-		print("Successfully saved swiss round %s to %s" % [str(swiss_round_number), self.resource_path])
+		print("Successfully saved swiss round %s to %s" % [str(swiss_round_number), save_path])
 		return "OK"
 	else:
-		var error_message = "Failed to save swiss round %s to %s. Error: %s" % [str(swiss_round_number), self.resource_path, error_string(error)]
+		var error_message = "Failed to save swiss round %s to %s. Error: %s" % [str(swiss_round_number), save_path, error_string(error)]
 		push_error(error_message)
 		return error_message

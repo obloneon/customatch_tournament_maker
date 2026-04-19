@@ -1,0 +1,22 @@
+[gd_scene format=3 uid="uid://c15ry1mnx8lah"]
+
+[ext_resource type="Script" uid="uid://druyk0tsl8x7b" path="res://scripts/manual_player_import_dialog.gd" id="1_idk82"]
+
+[node name="ManualPlayerImportDialog" type="AcceptDialog" unique_id=730467478]
+oversampling_override = 1.0
+title = "Import Players"
+initial_position = 2
+size = Vector2i(500, 1000)
+visible = true
+ok_button_text = "Import"
+script = ExtResource("1_idk82")
+
+[node name="TextEdit" type="TextEdit" parent="." unique_id=333362133]
+offset_left = 8.0
+offset_top = 8.0
+offset_right = 492.0
+offset_bottom = 929.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[connection signal="confirmed" from="." to="." method="_on_confirmed"]

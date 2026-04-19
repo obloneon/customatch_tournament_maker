@@ -1,0 +1,95 @@
+[gd_scene format=3 uid="uid://d1u35xwyms7dj"]
+
+[ext_resource type="Script" uid="uid://bog0rldwbxr8v" path="res://scripts/player_import.gd" id="1_eb1bk"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_pdrx0"]
+content_margin_left = 10.0
+content_margin_top = 10.0
+content_margin_right = 10.0
+content_margin_bottom = 10.0
+bg_color = Color(0.101960786, 0.101960786, 0.101960786, 1)
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+corner_detail = 5
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_eb1bk"]
+content_margin_bottom = 10.0
+bg_color = Color(0.09239709, 0.09239706, 0.09239706, 1)
+expand_margin_left = 10.0
+expand_margin_top = 10.0
+expand_margin_right = 10.0
+shadow_color = Color(0.096204735, 0.09620475, 0.096204735, 0.6)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_bd51f"]
+bg_color = Color(0.14044744, 0.14044747, 0.14044738, 1)
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+corner_detail = 5
+
+[node name="PlayerImport" type="CanvasLayer" unique_id=1571288498]
+script = ExtResource("1_eb1bk")
+
+[node name="PanelContainer" type="PanelContainer" parent="." unique_id=234856596]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_pdrx0")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer" unique_id=979231745]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="HeaderPanelContainer" type="PanelContainer" parent="PanelContainer/VBoxContainer" unique_id=662887306]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_eb1bk")
+
+[node name="HeaderHBox" type="HBoxContainer" parent="PanelContainer/VBoxContainer/HeaderPanelContainer" unique_id=1508266342]
+layout_mode = 2
+
+[node name="RoundLabel" type="Label" parent="PanelContainer/VBoxContainer/HeaderPanelContainer/HeaderHBox" unique_id=1643642191]
+layout_mode = 2
+size_flags_horizontal = 2
+text = "Player Import"
+
+[node name="CloseButton" type="Button" parent="PanelContainer/VBoxContainer/HeaderPanelContainer/HeaderHBox" unique_id=1979822188]
+layout_mode = 2
+text = "🗙"
+
+[node name="ActionSelectionContainer" type="PanelContainer" parent="PanelContainer/VBoxContainer" unique_id=210433071]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_styles/panel = SubResource("StyleBoxFlat_bd51f")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer/VBoxContainer/ActionSelectionContainer" unique_id=813981190]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_override_constants/separation = 20
+
+[node name="FromFileButton" type="Button" parent="PanelContainer/VBoxContainer/ActionSelectionContainer/VBoxContainer" unique_id=1465182125]
+layout_mode = 2
+theme_override_font_sizes/font_size = 64
+text = "From File"
+
+[node name="ManualButton" type="Button" parent="PanelContainer/VBoxContainer/ActionSelectionContainer/VBoxContainer" unique_id=1628555281]
+layout_mode = 2
+theme_override_font_sizes/font_size = 64
+text = "Manual"
+
+[node name="AddPlayerButton" type="Button" parent="PanelContainer/VBoxContainer/ActionSelectionContainer/VBoxContainer" unique_id=1046643830]
+visible = false
+layout_mode = 2
+theme_override_font_sizes/font_size = 64
+text = "Add Player"
+
+[node name="RemovePlayerButton" type="Button" parent="PanelContainer/VBoxContainer/ActionSelectionContainer/VBoxContainer" unique_id=1988497451]
+visible = false
+layout_mode = 2
+theme_override_font_sizes/font_size = 64
+text = "Remove Player"

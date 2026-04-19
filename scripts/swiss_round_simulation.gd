@@ -58,8 +58,9 @@ func _simulate_swiss_rounds() -> Array[SwissRound]:
 		swiss_rounds.append(current_round)
 		players = players_for_next_round.duplicate()
 		_print_swiss_round(current_round)
+	swiss_rounds[(swiss_rounds.size() - 1)].save("res://resources/test_swiss.tres")
 	return swiss_rounds
-
+	
 
 func _print_swiss_round(swiss_round: SwissRound) -> void:
 	if not print_swiss_rounds:

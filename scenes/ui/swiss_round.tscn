@@ -1,0 +1,134 @@
+[gd_scene format=3 uid="uid://c57l0xsnvoaut"]
+
+[ext_resource type="Script" uid="uid://bdx8gx6tw56d4" path="res://scripts/swiss_round_ui.gd" id="1_yqq0a"]
+[ext_resource type="Resource" uid="uid://bxxjh0tju5dah" path="res://resources/test_swiss.tres" id="2_yqq0a"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_8xand"]
+content_margin_left = 10.0
+content_margin_top = 10.0
+content_margin_right = 10.0
+content_margin_bottom = 10.0
+bg_color = Color(0.13725491, 0.13725491, 0.13725491, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_yqq0a"]
+content_margin_bottom = 10.0
+bg_color = Color(0.09239709, 0.09239706, 0.09239706, 1)
+expand_margin_left = 10.0
+expand_margin_top = 10.0
+expand_margin_right = 10.0
+shadow_color = Color(0.096204735, 0.09620475, 0.096204735, 0.6)
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_yqq0a"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_oycko"]
+content_margin_left = 20.0
+content_margin_top = 6.0
+content_margin_right = 20.0
+content_margin_bottom = 20.0
+bg_color = Color(0.23137255, 0.23137255, 0.25882354, 1)
+border_width_left = 5
+border_width_top = 5
+border_width_right = 5
+border_width_bottom = 5
+border_color = Color(0.09913466, 0.09913414, 0.10792313, 1)
+corner_radius_top_left = 12
+corner_radius_top_right = 12
+corner_radius_bottom_right = 12
+corner_radius_bottom_left = 12
+
+[node name="SwissRound" type="PanelContainer" unique_id=1212515927]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_8xand")
+script = ExtResource("1_yqq0a")
+swiss_round_res = ExtResource("2_yqq0a")
+
+[node name="RoundContentContainer" type="VBoxContainer" parent="." unique_id=1848481129]
+layout_mode = 2
+theme_override_constants/separation = 15
+
+[node name="HeaderPanelContainer" type="PanelContainer" parent="RoundContentContainer" unique_id=1385921621]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_yqq0a")
+
+[node name="SwissRoundHeader" type="HBoxContainer" parent="RoundContentContainer/HeaderPanelContainer" unique_id=1908944327]
+layout_mode = 2
+
+[node name="BackButton" type="Button" parent="RoundContentContainer/HeaderPanelContainer/SwissRoundHeader" unique_id=1553238678]
+layout_mode = 2
+size_flags_horizontal = 0
+text = "←"
+
+[node name="RoundLabel" type="Label" parent="RoundContentContainer/HeaderPanelContainer/SwissRoundHeader" unique_id=2019265247]
+layout_mode = 2
+size_flags_horizontal = 0
+text = "PLACEHOLDER"
+
+[node name="VSeparator" type="VSeparator" parent="RoundContentContainer/HeaderPanelContainer/SwissRoundHeader" unique_id=2082921386]
+layout_mode = 2
+theme_override_styles/separator = SubResource("StyleBoxEmpty_yqq0a")
+
+[node name="SettingsButton" type="Button" parent="RoundContentContainer/HeaderPanelContainer/SwissRoundHeader" unique_id=1895564188]
+layout_mode = 2
+size_flags_horizontal = 2
+text = "⚙"
+
+[node name="FinishedMatchesLabel" type="Label" parent="RoundContentContainer/HeaderPanelContainer/SwissRoundHeader" unique_id=1772390956]
+layout_mode = 2
+
+[node name="NextButton" type="Button" parent="RoundContentContainer/HeaderPanelContainer/SwissRoundHeader" unique_id=677511436]
+layout_mode = 2
+text = "→"
+
+[node name="ScrollContainer" type="ScrollContainer" parent="RoundContentContainer" unique_id=969027591]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="MatchGroupContainer" type="VFlowContainer" parent="RoundContentContainer/ScrollContainer" unique_id=779918018]
+layout_mode = 2
+theme_override_constants/h_separation = 15
+theme_override_constants/v_separation = 15
+
+[node name="NextActionPanelContainer" type="PanelContainer" parent="." unique_id=1605946832]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 6
+theme_override_styles/panel = SubResource("StyleBoxFlat_oycko")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="NextActionPanelContainer" unique_id=777175386]
+layout_mode = 2
+
+[node name="CloseButton" type="Button" parent="NextActionPanelContainer/VBoxContainer" unique_id=1535955327]
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 0
+theme_override_colors/font_color = Color(0.08856013, 0.088559814, 0.08855989, 1)
+theme_override_colors/font_focus_color = Color(0.5686275, 0.5686275, 0.5686275, 1)
+theme_override_colors/font_pressed_color = Color(0.043039225, 0.04303913, 0.043039195, 1)
+theme_override_colors/font_hover_color = Color(0.5686275, 0.5686275, 0.5686275, 1)
+theme_override_colors/font_hover_pressed_color = Color(0.043039225, 0.04303913, 0.043039195, 1)
+theme_override_colors/font_outline_color = Color(0.09019608, 0.09019608, 0.09019608, 1)
+theme_override_colors/icon_normal_color = Color(0.09019608, 0.09019608, 0.09019608, 1)
+theme_override_colors/icon_focus_color = Color(0.09019608, 0.09019608, 0.09019608, 1)
+theme_override_colors/icon_pressed_color = Color(0.09019608, 0.09019608, 0.09019608, 1)
+theme_override_colors/icon_hover_color = Color(0.09019608, 0.09019608, 0.09019608, 1)
+theme_override_colors/icon_hover_pressed_color = Color(0.09019608, 0.09019608, 0.09019608, 1)
+text = "🗙"
+flat = true
+
+[node name="ActionSelctionContainer" type="VBoxContainer" parent="NextActionPanelContainer/VBoxContainer" unique_id=476074447]
+layout_mode = 2
+theme_override_constants/separation = 30
+
+[node name="NewRoundButton" type="Button" parent="NextActionPanelContainer/VBoxContainer/ActionSelctionContainer" unique_id=1619050177]
+layout_mode = 2
+theme_override_font_sizes/font_size = 64
+text = "Generate Next Round"
+
+[node name="ResultsButton" type="Button" parent="NextActionPanelContainer/VBoxContainer/ActionSelctionContainer" unique_id=604643001]
+layout_mode = 2
+theme_override_font_sizes/font_size = 64
+text = "Show Results"

@@ -4,17 +4,20 @@ extends Resource
 ## that the assigned result is valid.
 
 
+
+
 @export var players: Array[Player] = []
 @export var station: Station  
 @export var result: Dictionary[Player, int]
 
 
 ## Validates result before assignment. 
-## Returns "OK" if result is valid else returns an error message
+## Returns "OK" if assignment was successfull else returns an error message
 func assign_result(new_result: Dictionary[Player, int]) -> String:
 	var error = _validate_result(new_result)
 	if error == "OK":
 		result = new_result.duplicate()
+
 		return "OK"
 	else:
 		return "Result assignment failed. Error: " + error

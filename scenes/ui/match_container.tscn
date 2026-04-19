@@ -1,0 +1,47 @@
+[gd_scene format=3 uid="uid://dr0etkq7p23v4"]
+
+[ext_resource type="Script" uid="uid://h32f4t3tapvg" path="res://scripts/match_container.gd" id="1_b2r4o"]
+[ext_resource type="Resource" uid="uid://cec56hwqy8wk5" path="res://resources/new_resource.tres" id="2_362wj"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_362wj"]
+bg_color = Color(0.13725491, 0.13725491, 0.13725491, 0.99215686)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_kwi54"]
+content_margin_left = 0.0
+content_margin_top = 0.0
+content_margin_right = 0.0
+content_margin_bottom = 0.0
+bg_color = Color(0.1, 0.1, 0.1, 0.6)
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+corner_detail = 5
+
+[node name="MatchContainer" type="PanelContainer" unique_id=1888942583]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_362wj")
+script = ExtResource("1_b2r4o")
+match_res = ExtResource("2_362wj")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="." unique_id=634953755]
+layout_mode = 2
+
+[node name="PanelContainerLabel" type="PanelContainer" parent="VBoxContainer" unique_id=789826958]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_kwi54")
+
+[node name="MatchLabel" type="Label" parent="VBoxContainer/PanelContainerLabel" unique_id=252308053]
+layout_mode = 2
+
+[node name="PanelContainerSlots" type="PanelContainer" parent="VBoxContainer" unique_id=401890756]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="MatchSlotContainer" type="HFlowContainer" parent="VBoxContainer/PanelContainerSlots" unique_id=143094453]
+layout_mode = 2
+size_flags_vertical = 3

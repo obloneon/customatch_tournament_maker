@@ -1,0 +1,39 @@
+[gd_scene format=3 uid="uid://dlhq64kpm75kn"]
+
+[ext_resource type="Script" uid="uid://3rtjcr1ordq0" path="res://scripts/match_slot.gd" id="1_r6635"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_r6635"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_dnldi"]
+content_margin_left = 5.0
+
+[node name="MatchSlot" type="PanelContainer" unique_id=973611294]
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 53.0
+grow_horizontal = 2
+size_flags_horizontal = 3
+size_flags_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxEmpty_r6635")
+script = ExtResource("1_r6635")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="." unique_id=244100764]
+layout_mode = 2
+size_flags_vertical = 0
+
+[node name="PanelContainerPlayer" type="PanelContainer" parent="HBoxContainer" unique_id=1525506654]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_styles/panel = SubResource("StyleBoxEmpty_dnldi")
+
+[node name="PlayerLabel" type="Label" parent="HBoxContainer/PanelContainerPlayer" unique_id=2052163131]
+layout_mode = 2
+text = "PLACEHOLDER_PLAYER"
+
+[node name="PanelContainePlacement" type="PanelContainer" parent="HBoxContainer" unique_id=392878175]
+layout_mode = 2
+
+[node name="PlacementInput" type="LineEdit" parent="HBoxContainer/PanelContainePlacement" unique_id=1424920963]
+layout_mode = 2
+placeholder_text = "0"
+alignment = 1

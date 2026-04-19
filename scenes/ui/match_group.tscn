@@ -1,0 +1,44 @@
+[gd_scene format=3 uid="uid://cnw68ot40x1pl"]
+
+[ext_resource type="Script" uid="uid://bwx45crcjduat" path="res://scripts/match_group.gd" id="1_ej5d5"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_spins"]
+content_margin_left = 25.0
+content_margin_top = 5.0
+content_margin_right = 25.0
+content_margin_bottom = 25.0
+bg_color = Color(0.23117495, 0.23116115, 0.25896114, 1)
+corner_radius_top_left = 16
+corner_radius_top_right = 16
+corner_radius_bottom_right = 16
+corner_radius_bottom_left = 16
+
+[node name="MatchGroup" type="PanelContainer" unique_id=737176468]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_spins")
+script = ExtResource("1_ej5d5")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="." unique_id=243373655]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer" unique_id=1130218815]
+layout_mode = 2
+
+[node name="GroupLabel" type="Label" parent="VBoxContainer/HBoxContainer" unique_id=513852120]
+layout_mode = 2
+text = "Group _ : "
+
+[node name="MatchStartTime" type="LineEdit" parent="VBoxContainer/HBoxContainer" unique_id=1151037247]
+layout_mode = 2
+placeholder_text = "00:00"
+alignment = 1
+
+[node name="MatchesGrid" type="GridContainer" parent="VBoxContainer" unique_id=220825447]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/h_separation = 10
+theme_override_constants/v_separation = 10

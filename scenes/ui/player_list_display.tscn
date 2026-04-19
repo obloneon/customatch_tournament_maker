@@ -1,0 +1,58 @@
+[gd_scene format=3 uid="uid://dv874nqvuvp5h"]
+
+[ext_resource type="Script" uid="uid://ccivp6jdtc4qg" path="res://scripts/player_list_display.gd" id="1_xpxdt"]
+[ext_resource type="StyleBox" uid="uid://vihb6mhogh73" path="res://resources/ui/player_list_labels_style_box_flat.tres" id="2_vf1u5"]
+[ext_resource type="Resource" uid="uid://ccmsh0ouu4dbm" path="res://resources/test_swiss.tres" id="2_y5llx"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ynmjr"]
+content_margin_left = 15.0
+content_margin_top = 10.0
+content_margin_right = 15.0
+content_margin_bottom = 10.0
+bg_color = Color(0.23137255, 0.23137255, 0.25882354, 1)
+border_width_left = 4
+border_width_top = 4
+border_width_right = 4
+border_width_bottom = 4
+border_color = Color(0.09019608, 0.09019608, 0.09019608, 1)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+
+[node name="PlayerListDisplay" type="PanelContainer" unique_id=965415081]
+offset_right = 40.0
+offset_bottom = 40.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_ynmjr")
+script = ExtResource("1_xpxdt")
+swiss_round = ExtResource("2_y5llx")
+sort_by = "Points"
+
+[node name="GridContainer" type="GridContainer" parent="." unique_id=496917256]
+layout_mode = 2
+theme_override_constants/h_separation = 4
+theme_override_constants/v_separation = 8
+columns = 4
+
+[node name="PlacementColumnLabel" type="Label" parent="GridContainer" unique_id=1778915088]
+layout_mode = 2
+theme_override_styles/normal = ExtResource("2_vf1u5")
+text = "#"
+horizontal_alignment = 1
+
+[node name="NameColumnLabel" type="Label" parent="GridContainer" unique_id=1696150363]
+layout_mode = 2
+theme_override_styles/normal = ExtResource("2_vf1u5")
+text = "Player"
+
+[node name="WinColumnLabel" type="Label" parent="GridContainer" unique_id=2132481581]
+layout_mode = 2
+theme_override_styles/normal = ExtResource("2_vf1u5")
+text = "Wins"
+horizontal_alignment = 1
+
+[node name="PointsColumnLabel" type="Label" parent="GridContainer" unique_id=1804350727]
+layout_mode = 2
+theme_override_styles/normal = ExtResource("2_vf1u5")
+text = "Points"
+horizontal_alignment = 1
