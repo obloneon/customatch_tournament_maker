@@ -1,0 +1,116 @@
+[gd_scene format=3 uid="uid://cv2rl6tfwork4"]
+
+[ext_resource type="PackedScene" uid="uid://dv874nqvuvp5h" path="res://scenes/ui/player_list_display.tscn" id="1_i2bm6"]
+[ext_resource type="Script" uid="uid://cxfpcp24i4153" path="res://scripts/result_display.gd" id="1_pcjer"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_8xand"]
+content_margin_left = 10.0
+content_margin_top = 10.0
+content_margin_right = 10.0
+content_margin_bottom = 10.0
+bg_color = Color(0.13725491, 0.13725491, 0.13725491, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_yqq0a"]
+content_margin_bottom = 10.0
+bg_color = Color(0.09239709, 0.09239706, 0.09239706, 1)
+expand_margin_left = 10.0
+expand_margin_top = 10.0
+expand_margin_right = 10.0
+shadow_color = Color(0.096204735, 0.09620475, 0.096204735, 0.6)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_oycko"]
+content_margin_left = 20.0
+content_margin_top = 20.0
+content_margin_right = 20.0
+content_margin_bottom = 20.0
+bg_color = Color(0.23137255, 0.23137255, 0.25882354, 1)
+border_width_left = 5
+border_width_top = 5
+border_width_right = 5
+border_width_bottom = 5
+border_color = Color(0.09913466, 0.09913414, 0.10792313, 1)
+corner_radius_top_left = 12
+corner_radius_top_right = 12
+corner_radius_bottom_right = 12
+corner_radius_bottom_left = 12
+
+[node name="ResultDisplay" type="PanelContainer" unique_id=1212515927]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_8xand")
+script = ExtResource("1_pcjer")
+
+[node name="VboxContainer" type="VBoxContainer" parent="." unique_id=1848481129]
+layout_mode = 2
+theme_override_constants/separation = 15
+
+[node name="HeaderPanelContainer" type="PanelContainer" parent="VboxContainer" unique_id=1385921621]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_yqq0a")
+
+[node name="Header" type="HBoxContainer" parent="VboxContainer/HeaderPanelContainer" unique_id=1908944327]
+layout_mode = 2
+
+[node name="BackButton" type="Button" parent="VboxContainer/HeaderPanelContainer/Header" unique_id=1553238678]
+layout_mode = 2
+size_flags_horizontal = 0
+text = "←"
+
+[node name="Label" type="Label" parent="VboxContainer/HeaderPanelContainer/Header" unique_id=730919002]
+layout_mode = 2
+size_flags_horizontal = 4
+text = "Standings"
+
+[node name="SettingsButton" type="Button" parent="VboxContainer/HeaderPanelContainer/Header" unique_id=1895564188]
+visible = false
+layout_mode = 2
+size_flags_horizontal = 10
+text = "⚙"
+
+[node name="ContentContainer" type="HBoxContainer" parent="VboxContainer" unique_id=862167181]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="ScrollContainer" type="ScrollContainer" parent="VboxContainer/ContentContainer" unique_id=969027591]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="PlayerListDisplay" parent="VboxContainer/ContentContainer/ScrollContainer" unique_id=965415081 instance=ExtResource("1_i2bm6")]
+layout_mode = 2
+size_flags_horizontal = 6
+size_flags_vertical = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="VboxContainer/ContentContainer" unique_id=1191496524]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="NextActionPanelContainer" type="PanelContainer" parent="VboxContainer/ContentContainer/VBoxContainer" unique_id=49227379]
+layout_mode = 2
+size_flags_horizontal = 6
+size_flags_vertical = 6
+theme_override_styles/panel = SubResource("StyleBoxFlat_oycko")
+
+[node name="NextActionContainer" type="VBoxContainer" parent="VboxContainer/ContentContainer/VBoxContainer/NextActionPanelContainer" unique_id=1523218823]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+theme_override_constants/separation = 30
+
+[node name="NewTopCutButton" type="Button" parent="VboxContainer/ContentContainer/VBoxContainer/NextActionPanelContainer/NextActionContainer" unique_id=593979647]
+visible = false
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_override_font_sizes/font_size = 64
+text = "Generate Top Cut"
+
+[node name="TitleScreenButton" type="Button" parent="VboxContainer/ContentContainer/VBoxContainer/NextActionPanelContainer/NextActionContainer" unique_id=2034210796]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_override_font_sizes/font_size = 64
+text = "Title Screen"

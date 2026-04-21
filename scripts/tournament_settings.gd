@@ -9,7 +9,7 @@ const SETTINGS_PATH: String = "user://settings/tournament_settings.tres"
 	set(value):
 		station_count = max(value, 1)
 ## Match size of the tournament. Cannot be lower than 2.
-@export var match_size: int = 4:
+@export var match_size: int = 2:
 	set(value):
 		match_size = max(value, 2)
 ## Stations that have a stand out feature
@@ -20,7 +20,10 @@ const SETTINGS_PATH: String = "user://settings/tournament_settings.tres"
 		special_stations = clamp(value, 0, station_count)
 ## Description of the special station. This will be shown next to the stations 
 ## number if it is a special station.
-@export var special_station_label: String = "Special"
+@export var special_station_name: String = "Special":
+	set(value):
+		if value == "":
+			return
 
 ## Returns a warning if it fails else returns OK
 func save() -> String:
@@ -30,7 +33,6 @@ func save() -> String:
 		return "OK"
 	else:
 		var error_message = "Failed to save tournament settings. Error:" + str(error)
-		push_warning(error_message)
 		return error_message
 
 
@@ -40,4 +42,10 @@ static func load_or_create() -> TournamentSettings:
 		res = load(SETTINGS_PATH) as TournamentSettings
 	else:
 		res = TournamentSettings.new()
+		var settings_dir_path := SETTINGS_PATH.replacen("tournament_settings.tres", "")
+		if not DirAccess.dir_exists_absolute(settings_dir_path):
+			var error = DirAccess.make_dir_absolute(settings_dir_path)
+			if error != OK:
+				push_error(error)
+		res.save()
 	return res

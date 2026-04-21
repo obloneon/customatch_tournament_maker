@@ -1,0 +1,78 @@
+[gd_scene format=3 uid="uid://dxy3u2dwtqydo"]
+
+[ext_resource type="Script" uid="uid://b5rt4mh2182xq" path="res://scripts/tournament_settings_ui_edit.gd" id="1_tnjye"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_oycko"]
+content_margin_left = 20.0
+content_margin_top = 20.0
+content_margin_right = 20.0
+content_margin_bottom = 20.0
+bg_color = Color(0.23137255, 0.23137255, 0.25882354, 1)
+border_width_left = 5
+border_width_top = 5
+border_width_right = 5
+border_width_bottom = 5
+border_color = Color(0.09913466, 0.09913414, 0.10792313, 1)
+corner_radius_top_left = 12
+corner_radius_top_right = 12
+corner_radius_bottom_right = 12
+corner_radius_bottom_left = 12
+
+[node name="TournamentSettingsUIEdit" type="PanelContainer" unique_id=1433044253]
+size_flags_horizontal = 6
+size_flags_vertical = 6
+theme_override_styles/panel = SubResource("StyleBoxFlat_oycko")
+script = ExtResource("1_tnjye")
+
+[node name="TournamentSettingsContainer" type="VBoxContainer" parent="." unique_id=110726483]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+theme_override_constants/separation = 30
+
+[node name="MatchSizeContainer" type="HBoxContainer" parent="TournamentSettingsContainer" unique_id=580409477]
+layout_mode = 2
+
+[node name="MatchSizeLabel" type="Label" parent="TournamentSettingsContainer/MatchSizeContainer" unique_id=178630918]
+layout_mode = 2
+text = "Match Size: "
+
+[node name="MatchSizeEdit" type="LineEdit" parent="TournamentSettingsContainer/MatchSizeContainer" unique_id=1258637772]
+layout_mode = 2
+size_flags_horizontal = 10
+alignment = 1
+
+[node name="StationCountContainer" type="HBoxContainer" parent="TournamentSettingsContainer" unique_id=1095721976]
+layout_mode = 2
+
+[node name="StationCountLabel" type="Label" parent="TournamentSettingsContainer/StationCountContainer" unique_id=1863506054]
+layout_mode = 2
+text = "Station Count: "
+
+[node name="StationCountEdit" type="LineEdit" parent="TournamentSettingsContainer/StationCountContainer" unique_id=1028484419]
+layout_mode = 2
+size_flags_horizontal = 10
+alignment = 1
+
+[node name="SpecialStationsContainer" type="HBoxContainer" parent="TournamentSettingsContainer" unique_id=1889291799]
+layout_mode = 2
+
+[node name="SpecialStationsLabel" type="Label" parent="TournamentSettingsContainer/SpecialStationsContainer" unique_id=616065619]
+layout_mode = 2
+text = "Special Stations: "
+
+[node name="SpecialStationsEdit" type="LineEdit" parent="TournamentSettingsContainer/SpecialStationsContainer" unique_id=1456270800]
+layout_mode = 2
+size_flags_horizontal = 10
+alignment = 1
+
+[node name="SpecialStationNameContainer" type="HBoxContainer" parent="TournamentSettingsContainer" unique_id=140436028]
+layout_mode = 2
+
+[node name="SpecialStationNameLabel" type="Label" parent="TournamentSettingsContainer/SpecialStationNameContainer" unique_id=1070053717]
+layout_mode = 2
+text = "Special Station Name: "
+
+[node name="SpecialStationNameEdit" type="LineEdit" parent="TournamentSettingsContainer/SpecialStationNameContainer" unique_id=1137393949]
+layout_mode = 2
+size_flags_horizontal = 10

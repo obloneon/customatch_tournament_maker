@@ -86,9 +86,7 @@ func _import_players_from_string(players_string: String, clear_before_import := 
 		var new_player = Player.new(striped_name)
 		imported_players.append(new_player)
 	players_imported.emit(imported_players)
-	print(imported_player_names)
-	print()
-	print()
+	hide()
 
 
 ## Transforms a [code].csv[/code] or [code].txt[/code] file into a string that

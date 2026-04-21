@@ -2,7 +2,6 @@
 
 [ext_resource type="Script" uid="uid://ccivp6jdtc4qg" path="res://scripts/player_list_display.gd" id="1_xpxdt"]
 [ext_resource type="StyleBox" uid="uid://vihb6mhogh73" path="res://resources/ui/player_list_labels_style_box_flat.tres" id="2_vf1u5"]
-[ext_resource type="Resource" uid="uid://ccmsh0ouu4dbm" path="res://resources/test_swiss.tres" id="2_y5llx"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ynmjr"]
 content_margin_left = 15.0
@@ -25,8 +24,6 @@ offset_right = 40.0
 offset_bottom = 40.0
 theme_override_styles/panel = SubResource("StyleBoxFlat_ynmjr")
 script = ExtResource("1_xpxdt")
-swiss_round = ExtResource("2_y5llx")
-sort_by = "Points"
 
 [node name="GridContainer" type="GridContainer" parent="." unique_id=496917256]
 layout_mode = 2
@@ -45,14 +42,14 @@ layout_mode = 2
 theme_override_styles/normal = ExtResource("2_vf1u5")
 text = "Player"
 
-[node name="WinColumnLabel" type="Label" parent="GridContainer" unique_id=2132481581]
-layout_mode = 2
-theme_override_styles/normal = ExtResource("2_vf1u5")
-text = "Wins"
-horizontal_alignment = 1
-
 [node name="PointsColumnLabel" type="Label" parent="GridContainer" unique_id=1804350727]
 layout_mode = 2
 theme_override_styles/normal = ExtResource("2_vf1u5")
 text = "Points"
+horizontal_alignment = 1
+
+[node name="WinColumnLabel" type="Label" parent="GridContainer" unique_id=2132481581]
+layout_mode = 2
+theme_override_styles/normal = ExtResource("2_vf1u5")
+text = "Wins"
 horizontal_alignment = 1

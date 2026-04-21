@@ -14,10 +14,14 @@ compatibility/default_parent_skeleton_in_mesh_instance_3d=true
 
 [application]
 
-config/name="MK-TournamentCalc"
+config/name="CustoMatch - Tournament Maker"
 run/main_scene="uid://62ifqgv1d1lk"
 config/features=PackedStringArray("4.6", "GL Compatibility")
-config/icon="res://icon.svg"
+boot_splash/bg_color=Color(0, 0, 0, 1)
+boot_splash/stretch_mode=0
+boot_splash/image="uid://bsxdgil38f3ij"
+config/icon="uid://bfyu1wy4hvxum"
+config/windows_native_icon="res://assets/images/customatch_icon.ico"
 
 [audio]
 

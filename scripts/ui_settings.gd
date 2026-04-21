@@ -32,4 +32,10 @@ static func load_or_create() -> UISettings:
 		res = load(SETTINGS_PATH) as UISettings
 	else:
 		res = UISettings.new()
+		var settings_dir_path := SETTINGS_PATH.replacen("ui_settings.tres", "")
+		if not DirAccess.dir_exists_absolute(settings_dir_path):
+			var error = DirAccess.make_dir_absolute(settings_dir_path)
+			if error != OK:
+				push_error(error)
+		res.save()
 	return res

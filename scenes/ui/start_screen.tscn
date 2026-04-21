@@ -1,0 +1,91 @@
+[gd_scene format=3 uid="uid://bgvrtmmcmg17s"]
+
+[ext_resource type="Texture2D" uid="uid://biyqbltbya4je" path="res://assets/images/customatch_icon_transparent_1000x1000.png" id="1_aqjl8"]
+[ext_resource type="Script" uid="uid://i4kj6weky1c0" path="res://scripts/start_screen.gd" id="1_m7t1o"]
+
+[sub_resource type="Gradient" id="Gradient_m7t1o"]
+colors = PackedColorArray(0.16924527, 0.1692453, 0.16924527, 1, 0.072842635, 0.072842635, 0.072842635, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_ihgl4"]
+gradient = SubResource("Gradient_m7t1o")
+fill = 1
+fill_from = Vector2(0.5, 0.5)
+fill_to = Vector2(0.5, 1)
+metadata/_snap_enabled = true
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_kolwf"]
+content_margin_left = 10.0
+content_margin_top = 10.0
+content_margin_right = 10.0
+content_margin_bottom = 10.0
+texture = SubResource("GradientTexture2D_ihgl4")
+
+[node name="StartScreen" type="PanelContainer" unique_id=740791571]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxTexture_kolwf")
+script = ExtResource("1_m7t1o")
+
+[node name="Control" type="Control" parent="." unique_id=1271476774]
+layout_mode = 2
+
+[node name="VersionLabel" type="Label" parent="Control" unique_id=1572135531]
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_top = -23.0
+offset_right = 36.0
+grow_vertical = 0
+theme_override_font_sizes/font_size = 16
+text = "v.0.1"
+
+[node name="TextureRect" type="TextureRect" parent="Control" unique_id=1692556612]
+custom_minimum_size = Vector2(1200, 1200)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -600.0
+offset_top = -600.0
+offset_right = 600.0
+offset_bottom = 600.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 4
+size_flags_vertical = 6
+texture = ExtResource("1_aqjl8")
+expand_mode = 1
+
+[node name="StartButton" type="Button" parent="Control" unique_id=407593499]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -53.0
+offset_top = -91.5
+offset_right = 53.0
+offset_bottom = 91.5
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/font_size = 128
+text = "Start"
+flat = true
+
+[node name="HBoxContainer" type="HBoxContainer" parent="." unique_id=609242343]
+layout_mode = 2
+size_flags_vertical = 0
+
+[node name="QuitButton" type="Button" parent="HBoxContainer" unique_id=1884351700]
+clip_contents = true
+custom_minimum_size = Vector2(5, 5)
+layout_mode = 2
+size_flags_horizontal = 10
+text = "🗙"

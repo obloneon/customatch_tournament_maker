@@ -2,11 +2,23 @@
 
 [ext_resource type="Script" uid="uid://b6mtecr6cur5b" path="res://scripts/main.gd" id="1_o5qli"]
 [ext_resource type="PackedScene" uid="uid://d1u35xwyms7dj" path="res://scenes/ui/player_import.tscn" id="2_0wfyh"]
+[ext_resource type="PackedScene" uid="uid://bgvrtmmcmg17s" path="res://scenes/ui/start_screen.tscn" id="2_tbgi4"]
+[ext_resource type="PackedScene" uid="uid://871px2vvgsth" path="res://scenes/ui/tournament_manager.tscn" id="3_tefeu"]
+[ext_resource type="PackedScene" uid="uid://c57l0xsnvoaut" path="res://scenes/ui/swiss_round.tscn" id="4_o6xl0"]
+[ext_resource type="PackedScene" uid="uid://cv2rl6tfwork4" path="res://scenes/ui/result_display.tscn" id="5_tefeu"]
 
 [node name="Main" type="Node" unique_id=1289657067]
 script = ExtResource("1_o5qli")
 
 [node name="ContentLayer" type="CanvasLayer" parent="." unique_id=261071823]
+
+[node name="StartScreen" parent="ContentLayer" unique_id=740791571 instance=ExtResource("2_tbgi4")]
+
+[node name="TournamentManager" parent="ContentLayer" unique_id=1212515927 instance=ExtResource("3_tefeu")]
+
+[node name="SwissRound" parent="ContentLayer" unique_id=2095684119 instance=ExtResource("4_o6xl0")]
+
+[node name="ResultDisplay" parent="ContentLayer" unique_id=711126676 instance=ExtResource("5_tefeu")]
 
 [node name="PlayerImport" parent="." unique_id=1571288498 instance=ExtResource("2_0wfyh")]
 

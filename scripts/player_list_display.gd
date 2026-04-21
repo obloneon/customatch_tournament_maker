@@ -9,7 +9,7 @@ const PLAYER_LIST_LABELS_STYLE_BOX_FLAT = preload("uid://vihb6mhogh73")
 @export var show_placement: bool = true
 @export var show_wins: bool = true
 @export var show_points: bool = true
-@export_enum("Wins", "Points") var sort_by := "Wins"
+@export_enum("Points", "Wins") var sort_by := "Points"
  
 @onready var grid_container: GridContainer = $GridContainer
 @onready var placement_column_label: Label = $GridContainer/PlacementColumnLabel
@@ -17,22 +17,18 @@ const PLAYER_LIST_LABELS_STYLE_BOX_FLAT = preload("uid://vihb6mhogh73")
 @onready var points_column_label: Label = $GridContainer/PointsColumnLabel
 
 
-func _ready() -> void:
-	update()
-
-
 func update() -> void:
-	if player_list == null or player_list.is_empty():
-		if swiss_round:
-			player_list = swiss_round.get_players()
-		else:
-			push_error("no players to display")
-			return
 	# Remove old grid content except for coulumn labels
 	while grid_container.get_child_count() > 4:
 		var child = grid_container.get_child(-1)
 		grid_container.remove_child(child)
 		child.queue_free()
+	if player_list == null or player_list.is_empty():
+		if swiss_round:
+			player_list = swiss_round.get_players()
+		else:
+			push_warning("no players to display")
+			return
 	grid_container.columns = _calculate_needed_columns()
 	placement_column_label.visible = show_placement
 	win_column_label.visible = show_wins
@@ -52,15 +48,15 @@ func update() -> void:
 		name_label.text = list_to_display[i].name
 		name_label.add_theme_stylebox_override("normal", PLAYER_LIST_LABELS_STYLE_BOX_FLAT)
 		grid_container.add_child(name_label)
-		if show_wins:
-			var label = Label.new()
-			label.text = str(list_to_display[i].wins)
-			label.add_theme_stylebox_override("normal", PLAYER_LIST_LABELS_STYLE_BOX_FLAT)
-			label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-			grid_container.add_child(label)
 		if show_points:
 			var label = Label.new()
 			label.text = str(list_to_display[i].points)
+			label.add_theme_stylebox_override("normal", PLAYER_LIST_LABELS_STYLE_BOX_FLAT)
+			label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+			grid_container.add_child(label)
+		if show_wins:
+			var label = Label.new()
+			label.text = str(list_to_display[i].wins)
 			label.add_theme_stylebox_override("normal", PLAYER_LIST_LABELS_STYLE_BOX_FLAT)
 			label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 			grid_container.add_child(label)

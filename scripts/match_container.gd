@@ -26,8 +26,8 @@ func update() -> void:
 	if station:
 		var special_station_text: String = ""
 		if station.is_special_station:
-			special_station_text = Global.tournament_settings.special_station_label + " "
-		match_label.text = "%sStation %d" % [special_station_text, station.number] 
+			special_station_text = " - " + Global.tournament_settings.special_station_name
+		match_label.text = "Station %d%s" % [station.number, special_station_text] 
 	# MatchSlotContainer setup
 	# Remove the old match slots
 	while match_slot_container.get_child_count() > 0:

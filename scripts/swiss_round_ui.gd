@@ -41,15 +41,19 @@ var _finished_matches: Dictionary[Match, bool] = {}
 
 
 func _ready() -> void:
-	if not swiss_round_res:
-		push_error("No swiss round resource assigned")
-		return
 	# connect signals of internal buttons
 	if not next_button.button_up.is_connected(_set_next_action_selection_visible):
 		next_button.button_up.connect(_set_next_action_selection_visible.bind(true))
 	if not close_button.button_up.is_connected(_set_next_action_selection_visible):
 		close_button.button_up.connect(_set_next_action_selection_visible.bind(false))
+
+
+func update() -> void:
+	if not swiss_round_res:
+		push_error("No swiss round resource assigned")
+		return
 	# Ensure the correct elements are visible at ready
+	_finished_matches.clear()
 	_set_next_round_button_visiblity()
 	_set_next_action_selection_visible(false)
 	# Set the right text for dynamic labels
@@ -57,13 +61,6 @@ func _ready() -> void:
 	finished_matches_label.text = "Finished Matches: %d / %d" % [
 		_finished_matches.size(), swiss_round_res.matches.size()
 	]
-	update()
-
-
-func update() -> void:
-	if not swiss_round_res:
-		push_error("No swiss round resource assigned")
-		return
 	# Remove old match groups
 	while match_group_container.get_child_count() > 0:
 		var child = match_group_container.get_child(0)
@@ -107,6 +104,8 @@ func update() -> void:
 
 func _add_to_finished_matches(match_res: Match) -> void:
 	_finished_matches[match_res] = true
+	for player in match_res.players:
+		player.update_score(match_res)
 	finished_matches_label.text = "Finished Matches: %d / %d" % [
 		_finished_matches.size(), swiss_round_res.matches.size()
 	]
@@ -115,6 +114,8 @@ func _add_to_finished_matches(match_res: Match) -> void:
 
 func _remove_from_finished_matches(match_res: Match) -> void:
 	_finished_matches.erase(match_res)
+	for player in match_res.players:
+		player.undo_score_update(match_res)
 	finished_matches_label.text = "Finished Matches: %d / %d" % [
 		_finished_matches.size(), swiss_round_res.matches.size()
 	]

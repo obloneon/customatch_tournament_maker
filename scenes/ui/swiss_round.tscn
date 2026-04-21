@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://c57l0xsnvoaut"]
 
 [ext_resource type="Script" uid="uid://bdx8gx6tw56d4" path="res://scripts/swiss_round_ui.gd" id="1_yqq0a"]
-[ext_resource type="Resource" uid="uid://bxxjh0tju5dah" path="res://resources/test_swiss.tres" id="2_yqq0a"]
+[ext_resource type="Resource" uid="uid://ccmsh0ouu4dbm" path="res://resources/test_swiss.tres" id="2_yqq0a"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_8xand"]
 content_margin_left = 10.0
