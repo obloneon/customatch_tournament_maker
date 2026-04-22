@@ -34,7 +34,6 @@ func _main() -> void:
 	player_import.hide()
 	# Add ui scenes to scene tree
 	result_display = _add_scene_to(RESULT_DISPLAY, content_layer)
-	settings_ui = _add_scene_to(SETTINGS_UI, content_layer)
 	start_screen = _add_scene_to(START_SCREEN, content_layer)
 	swiss_round_ui = _add_scene_to(SWISS_ROUND_UI, content_layer)
 	tournament_manager = _add_scene_to(TOURNAMENT_MANAGER, content_layer)
@@ -54,14 +53,11 @@ func _main() -> void:
 		_switch_scene.bind(tournament_manager, start_screen)
 	)
 	tournament_manager.load_tournament_button.button_up.connect(_load_tournament)
-	tournament_manager.new_tournament_button.button_up.connect(player_import.show)
-	tournament_manager.new_tournament_button.button_up.connect(
-		tournament_manager.switch_display_mode.bind(
-			tournament_manager.DisplayModes.CONTENT
-		)
-	)
+	tournament_manager.new_tournament_button.button_up.connect(_confirm_new_tournament)
 	tournament_manager.new_round_button.button_down.connect(
-		_update_tournament_settings.bind(tournament_manager.tournament_settings_ui_edit)
+		_update_tournament_settings.bind(
+			tournament_manager.tournament_settings_ui_edit
+		)
 	)
 	tournament_manager.new_round_button.button_down.connect(_generate_swiss_round)
 	tournament_manager.new_round_button.button_down.connect(
@@ -72,6 +68,11 @@ func _main() -> void:
 	# PlayerImport signals
 	if not player_import.players_imported.is_connected(_update_player_list):
 		player_import.players_imported.connect(_update_player_list)
+	player_import.close_button.pressed.connect(
+		tournament_manager.switch_display_mode.bind(
+			tournament_manager.DisplayModes.ACTION_SELECT
+		)
+	)
 	# SwissRoundUI signals
 	swiss_round_ui.new_round_button.button_up.connect(_generate_swiss_round)
 	swiss_round_ui.back_button.button_up.connect(_confirm_round_deletion)
@@ -97,12 +98,42 @@ func _add_scene_to(scene_res: PackedScene, target: Node) -> Node:
 	return scene_instance
 
 
+func _confirm_new_tournament() -> void:
+	# No confirmation needed if no prior data can be lost
+	if swiss_rounds.is_empty():
+		player_import.show()
+		tournament_manager.switch_display_mode(tournament_manager.DisplayModes.CONTENT)
+	else:
+	# If prior data exists warn user
+		var confirmation_dialog := ConfirmationDialog.new()
+		confirmation_dialog.dialog_text = (
+			"Creating a new tournament will delete the currently existing one!
+			Any entered results and all finished rounds will be lost!"
+		)
+		confirmation_dialog.initial_position = (
+			Window.WINDOW_INITIAL_POSITION_CENTER_MAIN_WINDOW_SCREEN
+		) 
+		confirmation_dialog.min_size = Vector2(1000.0, 124.0)
+		confirmation_dialog.canceled.connect(confirmation_dialog.queue_free)
+		confirmation_dialog.confirmed.connect(
+			tournament_manager.switch_display_mode.bind(
+				tournament_manager.DisplayModes.CONTENT
+			)
+		)
+		confirmation_dialog.confirmed.connect(func(): swiss_rounds.clear())
+		confirmation_dialog.confirmed.connect(player_import.show)
+		confirmation_dialog.show()
+		add_child(confirmation_dialog)
+
+
 func _confirm_round_deletion() -> void:
 	var confirmation_dialog := ConfirmationDialog.new()
 	confirmation_dialog.dialog_text = (
 		"Going back will delete this round!\nAny entered results will be lost!"
 	)
-	confirmation_dialog.initial_position = Window.WINDOW_INITIAL_POSITION_CENTER_MAIN_WINDOW_SCREEN
+	confirmation_dialog.initial_position = (
+		Window.WINDOW_INITIAL_POSITION_CENTER_MAIN_WINDOW_SCREEN
+	)
 	confirmation_dialog.min_size = Vector2(600.0, 124.0)
 	confirmation_dialog.canceled.connect(confirmation_dialog.queue_free)
 	confirmation_dialog.confirmed.connect(_load_previous_round)
@@ -195,8 +226,8 @@ func _quit() -> void:
 func _restart()-> void:
 	for layer in get_children():
 		while layer.get_children().size() > 0:
-			var child = content_layer.get_child(0)
-			content_layer.remove_child(child)
+			var child = layer.get_child(0)
+			layer.remove_child(child)
 			child.queue_free()
 	_main()
 
