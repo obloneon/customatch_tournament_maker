@@ -2,23 +2,28 @@ class_name Main
 extends Node
 
 
+const RESULT_DISPLAY = preload("uid://cv2rl6tfwork4")
+const SETTINGS_UI = preload("uid://cl0ywm7nwp0db")
 const START_SCREEN = preload("uid://bgvrtmmcmg17s")
-const SWISS_ROUND_UI = preload("uid://1nc0ed8emy6c")
+const SWISS_ROUND_UI = preload("uid://c57l0xsnvoaut")
 const TOURNAMENT_MANAGER = preload("uid://871px2vvgsth")
 
+# Data
 ## The swiss round currently in progress
 var current_swiss_round: SwissRound
 ## All created swisss rounds of the current session indexed by their round number
 var swiss_rounds: Dictionary[int, SwissRound] = {}
 var player_list: Array[Player]
+# UI Scenes
+var result_display: ResultDisplay
+var settings_ui: SettingsUI
+var start_screen: StartScreen
+var swiss_round_ui: SwissRoundUI
+var tournament_manager: TournamentManager 
 
 @onready var content_layer: CanvasLayer = $ContentLayer
 @onready var player_import: PlayerImport = $PlayerImport
-@onready var settings: CanvasLayer = $Settings
-@onready var start_screen: StartScreen = $ContentLayer/StartScreen
-@onready var tournament_manager: TournamentManager = $ContentLayer/TournamentManager
-@onready var swiss_round_ui: SwissRoundUI = $ContentLayer/SwissRound
-@onready var result_display: ResultDisplay = $ContentLayer/ResultDisplay
+@onready var settings_layer: CanvasLayer = $SettingsLayer
 
 
 func _ready() -> void:
@@ -27,11 +32,13 @@ func _ready() -> void:
 
 func _main() -> void:
 	player_import.hide()
-	settings.hide()
-	start_screen.hide()
-	tournament_manager.hide()
-	swiss_round_ui.hide()
-	result_display.hide()
+	# Add ui scenes to scene tree
+	result_display = _add_scene_to(RESULT_DISPLAY, content_layer)
+	settings_ui = _add_scene_to(SETTINGS_UI, content_layer)
+	start_screen = _add_scene_to(START_SCREEN, content_layer)
+	swiss_round_ui = _add_scene_to(SWISS_ROUND_UI, content_layer)
+	tournament_manager = _add_scene_to(TOURNAMENT_MANAGER, content_layer)
+	# Connect signals
 	# StartScreen signals
 	start_screen.start_button.pressed.connect(
 		_switch_scene.bind(start_screen, tournament_manager)
@@ -78,10 +85,16 @@ func _main() -> void:
 		_switch_scene.bind(result_display, swiss_round_ui)
 	)
 	result_display.settings_button.button_up.connect(_open_settings)
-	result_display.title_screen_button.button_up.connect(
-		_switch_scene.bind(result_display, start_screen)
-	)
+	result_display.title_screen_button.button_up.connect(_restart)
+	# Start
 	start_screen.show()
+
+
+func _add_scene_to(scene_res: PackedScene, target: Node) -> Node:
+	var scene_instance = scene_res.instantiate() as Node
+	target.add_child(scene_instance)
+	scene_instance.hide()
+	return scene_instance
 
 
 func _confirm_round_deletion() -> void:
@@ -141,19 +154,14 @@ func _load_previous_round() -> void:
 		swiss_round_ui.update()
 
 
-#func _load_scene_into_content_layer(scene_res: Resource) -> Node:
-	#var scene_instance = scene_res.instantiate() as Node
-	#content_layer.add_child(scene_instance)
-	#scene_instance.hide()
-	#return scene_instance
-
-
 func _load_tournament() -> void:
 	pass # not yet implemented
 
 
 func _open_settings() -> void:
 	pass # not yet implemented
+	#if settings_layer.get_children().is_empty():
+		#settings_ui = _add_scene_to(SETTINGS_UI, settings_layer)
 
 
 func _print_swiss_round(swiss_round: SwissRound) -> void:
@@ -180,6 +188,24 @@ func _print_swiss_round(swiss_round: SwissRound) -> void:
 			print(player_result_template % string_var_array)
 
 
+func _quit() -> void:
+	get_tree().quit()
+
+
+func _restart()-> void:
+	for layer in get_children():
+		while layer.get_children().size() > 0:
+			var child = content_layer.get_child(0)
+			content_layer.remove_child(child)
+			child.queue_free()
+	_main()
+
+
+func _switch_scene(from: Node, to: Node) -> void:
+	from.hide()
+	to.show()
+
+
 func _update_player_list(players: Array[Player]) -> void:
 	player_list = players # When from player import then its affected by changes to imported players
 	if tournament_manager.new_round_button.disabled:
@@ -200,12 +226,3 @@ func _update_tournament_settings(setting_edit: TournamentSettingsUIEdit) -> void
 	Global.tournament_settings.special_stations = new_special_stations
 	Global.tournament_settings.special_station_name = new_special_station_name
 	Global.tournament_settings.save()
-
-
-func _switch_scene(from: Node, to: Node) -> void:
-	from.hide()
-	to.show()
-
-
-func _quit() -> void:
-	get_tree().quit()
