@@ -32,14 +32,18 @@ func save() -> String:
 		print("Successfully saved tournament settings to " + SETTINGS_PATH)
 		return "OK"
 	else:
-		var error_message = "Failed to save tournament settings. Error:" + str(error)
+		var error_message = (
+			"Failed to save tournament settings. Error:" + error_string(error)
+		)
 		return error_message
 
 
 static func load_or_create() -> TournamentSettings:
 	var res: TournamentSettings
-	if FileAccess.file_exists(SETTINGS_PATH):
-		res = load(SETTINGS_PATH) as TournamentSettings
+	if ResourceLoader.exists(SETTINGS_PATH):
+		res = ResourceLoader.load(
+			SETTINGS_PATH, "TournamentSettings", ResourceLoader.CACHE_MODE_IGNORE
+		)
 	else:
 		res = TournamentSettings.new()
 		var settings_dir_path := SETTINGS_PATH.replacen("tournament_settings.tres", "")

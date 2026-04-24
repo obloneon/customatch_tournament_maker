@@ -248,12 +248,38 @@ func _update_player_list(players: Array[Player]) -> void:
 
 
 func _update_tournament_settings(setting_edit: TournamentSettingsUIEdit) -> void:
-	var new_match_size = int(setting_edit.match_size_edit.text)
-	var new_station_count = int(setting_edit.station_count_edit.text)
-	var new_special_stations = int(setting_edit.special_stations_edit.text)
-	var new_special_station_name = setting_edit.special_station_name_edit.text
-	Global.tournament_settings.match_size = new_match_size
-	Global.tournament_settings.station_count = new_station_count
-	Global.tournament_settings.special_stations = new_special_stations
-	Global.tournament_settings.special_station_name = new_special_station_name
-	Global.tournament_settings.save()
+	var settings_changed := false
+	if setting_edit.match_size_edit.text != "":
+		Global.tournament_settings.match_size  = (
+			int(setting_edit.match_size_edit.text)
+		)
+		setting_edit.match_size_edit.placeholder_text = (
+			setting_edit.match_size_edit.text
+		)
+		settings_changed = true
+	if setting_edit.station_count_edit.text != "":
+		Global.tournament_settings.station_count = (
+			int(setting_edit.station_count_edit.text)
+		)
+		setting_edit.station_count_edit.placeholder_text = (
+			setting_edit.station_count_edit.text
+		)
+		settings_changed = true
+	if setting_edit.special_stations_edit.text != "":
+		Global.tournament_settings.special_stations = (
+			int(setting_edit.special_stations_edit.text)
+		)
+		setting_edit.special_stations_edit.placeholder_text = (
+			setting_edit.special_stations_edit.text
+		)
+		settings_changed = true
+	if setting_edit.special_station_name_edit.text != "":
+		Global.tournament_settings.special_station_name = (
+			setting_edit.special_station_name_edit.text
+		)
+		setting_edit.special_stations_name_edit.placeholder_text = (
+			setting_edit.special_stations_name_edit.text
+		)
+		settings_changed = true
+	if settings_changed:
+		Global.tournament_settings.save()
