@@ -144,8 +144,6 @@ func _confirm_round_deletion() -> void:
 func _generate_swiss_round() -> void:
 	if current_swiss_round != null:
 		player_list = current_swiss_round.get_players()
-		print("current round:")
-		_print_swiss_round(current_swiss_round)
 	if player_list.is_empty():
 		return
 	current_swiss_round = SwissRound.new()
@@ -206,10 +204,10 @@ func _print_swiss_round(swiss_round: SwissRound) -> void:
 			print("Match at special station %d:" % match_res.station.number)
 		else:
 			print("Match at station %d:" % match_res.station.number)
-		var player_result_header: String = "	Name |      Placement | Wins | Points | Played at Special"
+		var player_result_header: String = "	Name |   Placement | Wins | Points | Played at Special"
 		print(player_result_header)
 		for player: Player in match_res.result.keys():
-			var player_result_template: String = "	%s |         %s |    %s |      %s | %s"
+			var player_result_template: String = "	%s   |          %s |   %s |     %s | %s"
 			var string_var_array := []
 			string_var_array.append(player.name)
 			string_var_array.append(str(match_res.result[player]))
@@ -225,6 +223,8 @@ func _quit() -> void:
 
 func _restart()-> void:
 	for layer in get_children():
+		if layer is PlayerImport:
+			continue # Player import does not need to be reloaded
 		while layer.get_children().size() > 0:
 			var child = layer.get_child(0)
 			layer.remove_child(child)
