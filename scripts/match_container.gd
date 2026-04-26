@@ -26,7 +26,7 @@ func update() -> void:
 	if station:
 		var special_station_text: String = ""
 		if station.is_special_station:
-			special_station_text = " - " + Global.tournament_settings.special_station_name
+			special_station_text = " - " + Global.tournament.settings.special_station_name
 		match_label.text = "Station %d%s" % [station.number, special_station_text] 
 	# MatchSlotContainer setup
 	# Remove the old match slots
@@ -45,6 +45,9 @@ func update() -> void:
 		var placement_input: LineEdit = match_slot_instance.placement_input
 		placement_input.text_changed.connect(set_placement.bind(match_slot_instance))
 		placement_input.max_length = len(str(_player_count))
+		if match_res.result.has(player):
+			placement_input.text = str(match_res.result[player])
+			set_placement(placement_input.text, match_slot_instance)
 
 
 func set_placement(input: String, match_slot: MatchSlot) -> void:

@@ -2,16 +2,20 @@ class_name TournamentSettings
 extends Resource
 
 
-const SETTINGS_PATH: String = "user://settings/tournament_settings.tres"
+enum SortingCriteria {
+	POINTS,
+	WINS,
+}
 
-## Amount of stations where matches happen at the tournament. Cannot be lower than 1.
-@export var station_count: int = 1:
-	set(value):
-		station_count = max(value, 1)
+
 ## Match size of the tournament. Cannot be lower than 2.
 @export var match_size: int = 2:
 	set(value):
 		match_size = max(value, 2)
+## Amount of stations where matches happen at the tournament. Cannot be lower than 1.
+@export var station_count: int = 1:
+	set(value):
+		station_count = max(value, 1)
 ## Stations that have a stand out feature
 @export var special_stations: int = 0:
 	set(value):
@@ -24,28 +28,33 @@ const SETTINGS_PATH: String = "user://settings/tournament_settings.tres"
 	set(value):
 		if value == "":
 			return
-
-## Returns a warning if it fails else returns OK
-func save() -> String:
-	var error = ResourceSaver.save(self, SETTINGS_PATH)
-	if error == OK:
-		print("Successfully saved tournament settings to " + SETTINGS_PATH)
-		return "OK"
-	else:
-		var error_message = "Failed to save tournament settings. Error:" + str(error)
-		return error_message
+		special_station_name = value
+@export var primary_sorting_criteria: SortingCriteria = SortingCriteria.POINTS
+@export var ko_advancement_limit: int = 2:
+	set(value):
+		value = clamp(value, 1, match_size - 1)
+		ko_advancement_limit = value
 
 
-static func load_or_create() -> TournamentSettings:
-	var res: TournamentSettings
-	if FileAccess.file_exists(SETTINGS_PATH):
-		res = load(SETTINGS_PATH) as TournamentSettings
-	else:
-		res = TournamentSettings.new()
-		var settings_dir_path := SETTINGS_PATH.replacen("tournament_settings.tres", "")
-		if not DirAccess.dir_exists_absolute(settings_dir_path):
-			var error = DirAccess.make_dir_absolute(settings_dir_path)
-			if error != OK:
-				push_error(error)
-		res.save()
-	return res
+## Returns whether settings were changed as a boolean value
+func update(setting_dict: Dictionary[String, Variant]) -> bool:
+	var properties: Dictionary[String, int]= {}
+	for property in self.get_property_list():
+		properties[property["name"]] = property["type"]
+	var settings_changed := false
+	for setting in setting_dict.keys():
+		if setting in properties:
+			var value: Variant = setting_dict[setting]
+			var property_type = properties[setting]
+			if typeof(value) == property_type:
+				self.set(setting, value)
+				settings_changed = true
+			else:
+				push_error(
+					"Cannot assign %s with value: %s to a property with type: %s " % [
+						setting, str(value), str(property_type)
+					]
+				)
+		else:
+			push_warning("Tried to change setting %s but it does not exist" % [setting])
+	return settings_changed

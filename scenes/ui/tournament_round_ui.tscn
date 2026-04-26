@@ -1,7 +1,6 @@
 [gd_scene format=3 uid="uid://c57l0xsnvoaut"]
 
-[ext_resource type="Script" uid="uid://bdx8gx6tw56d4" path="res://scripts/swiss_round_ui.gd" id="1_yqq0a"]
-[ext_resource type="Resource" uid="uid://ccmsh0ouu4dbm" path="res://resources/test_swiss.tres" id="2_yqq0a"]
+[ext_resource type="Script" uid="uid://bdx8gx6tw56d4" path="res://scripts/tournament_round_ui.gd" id="1_yqq0a"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_8xand"]
 content_margin_left = 10.0
@@ -36,7 +35,7 @@ corner_radius_top_right = 12
 corner_radius_bottom_right = 12
 corner_radius_bottom_left = 12
 
-[node name="SwissRound" type="PanelContainer" unique_id=1212515927]
+[node name="TournamentRoundUI" type="PanelContainer" unique_id=1212515927]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -44,7 +43,6 @@ grow_horizontal = 2
 grow_vertical = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_8xand")
 script = ExtResource("1_yqq0a")
-swiss_round_res = ExtResource("2_yqq0a")
 
 [node name="RoundContentContainer" type="VBoxContainer" parent="." unique_id=1848481129]
 layout_mode = 2
@@ -54,32 +52,32 @@ theme_override_constants/separation = 15
 layout_mode = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_yqq0a")
 
-[node name="SwissRoundHeader" type="HBoxContainer" parent="RoundContentContainer/HeaderPanelContainer" unique_id=1908944327]
+[node name="RoundHeader" type="HBoxContainer" parent="RoundContentContainer/HeaderPanelContainer" unique_id=1908944327]
 layout_mode = 2
 
-[node name="BackButton" type="Button" parent="RoundContentContainer/HeaderPanelContainer/SwissRoundHeader" unique_id=1553238678]
+[node name="BackButton" type="Button" parent="RoundContentContainer/HeaderPanelContainer/RoundHeader" unique_id=1553238678]
 layout_mode = 2
 size_flags_horizontal = 0
 text = "←"
 
-[node name="RoundLabel" type="Label" parent="RoundContentContainer/HeaderPanelContainer/SwissRoundHeader" unique_id=2019265247]
+[node name="RoundLabel" type="Label" parent="RoundContentContainer/HeaderPanelContainer/RoundHeader" unique_id=2019265247]
 layout_mode = 2
 size_flags_horizontal = 0
 text = "PLACEHOLDER"
 
-[node name="VSeparator" type="VSeparator" parent="RoundContentContainer/HeaderPanelContainer/SwissRoundHeader" unique_id=2082921386]
+[node name="VSeparator" type="VSeparator" parent="RoundContentContainer/HeaderPanelContainer/RoundHeader" unique_id=2082921386]
 layout_mode = 2
 theme_override_styles/separator = SubResource("StyleBoxEmpty_yqq0a")
 
-[node name="SettingsButton" type="Button" parent="RoundContentContainer/HeaderPanelContainer/SwissRoundHeader" unique_id=1895564188]
+[node name="SettingsButton" type="Button" parent="RoundContentContainer/HeaderPanelContainer/RoundHeader" unique_id=1895564188]
 layout_mode = 2
 size_flags_horizontal = 2
 text = "⚙"
 
-[node name="FinishedMatchesLabel" type="Label" parent="RoundContentContainer/HeaderPanelContainer/SwissRoundHeader" unique_id=1772390956]
+[node name="FinishedMatchesLabel" type="Label" parent="RoundContentContainer/HeaderPanelContainer/RoundHeader" unique_id=1772390956]
 layout_mode = 2
 
-[node name="NextButton" type="Button" parent="RoundContentContainer/HeaderPanelContainer/SwissRoundHeader" unique_id=677511436]
+[node name="NextButton" type="Button" parent="RoundContentContainer/HeaderPanelContainer/RoundHeader" unique_id=677511436]
 layout_mode = 2
 text = "→"
 

@@ -5,11 +5,11 @@ extends PanelContainer
 const PLAYER_LIST_LABELS_STYLE_BOX_FLAT = preload("uid://vihb6mhogh73")
 
 @export var player_list: Array[Player]
-@export var swiss_round: SwissRound
+@export var round_res: TournamentRound
 @export var show_placement: bool = true
 @export var show_wins: bool = true
 @export var show_points: bool = true
-@export_enum("Points", "Wins") var sort_by := "Points"
+@export var show_average_opponent_points: bool = true
  
 @onready var grid_container: GridContainer = $GridContainer
 @onready var placement_column_label: Label = $GridContainer/PlacementColumnLabel
@@ -19,13 +19,13 @@ const PLAYER_LIST_LABELS_STYLE_BOX_FLAT = preload("uid://vihb6mhogh73")
 
 func update() -> void:
 	# Remove old grid content except for coulumn labels
-	while grid_container.get_child_count() > 4:
+	while grid_container.get_child_count() > 5:
 		var child = grid_container.get_child(-1)
 		grid_container.remove_child(child)
 		child.queue_free()
 	if player_list == null or player_list.is_empty():
-		if swiss_round:
-			player_list = swiss_round.get_players()
+		if round_res:
+			player_list = round_res.get_players()
 		else:
 			push_warning("no players to display")
 			return
@@ -36,7 +36,7 @@ func update() -> void:
 	
 	var list_to_display = player_list.duplicate(true)
 	if show_placement:
-		list_to_display.sort_custom(_compare_players)
+		list_to_display.sort_custom(HelperFunctions.compare_players)
 	for i in list_to_display.size():
 		if show_placement:
 			var label = Label.new()
@@ -60,6 +60,12 @@ func update() -> void:
 			label.add_theme_stylebox_override("normal", PLAYER_LIST_LABELS_STYLE_BOX_FLAT)
 			label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 			grid_container.add_child(label)
+		if show_average_opponent_points:
+			var label = Label.new()
+			label.text = str(snapped(HelperFunctions.calculate_average_opponent_points(list_to_display[i]), 0.001))
+			label.add_theme_stylebox_override("normal", PLAYER_LIST_LABELS_STYLE_BOX_FLAT)
+			label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+			grid_container.add_child(label)
 
 
 func _calculate_needed_columns() -> int:
@@ -70,17 +76,6 @@ func _calculate_needed_columns() -> int:
 		needed_columns_count += 1
 	if show_points:
 		needed_columns_count += 1
+	if show_average_opponent_points:
+		needed_columns_count += 1
 	return needed_columns_count
-
-
-## Custom comparator to use in Array.sort_custom(). Sorts descending depending
-## on the sort by property, and then uses the other as a tiebreaker.
-func _compare_players(a, b) -> bool:
-	if sort_by == "Points":
-		if a.points != b.points:
-			return a.points > b.points
-		return a.wins > b.wins
-	else:
-		if a.wins != b.wins:
-			return a.wins > b.wins
-		return a.points > b.points

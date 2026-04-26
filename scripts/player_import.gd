@@ -75,14 +75,14 @@ func _import_players_from_string(players_string: String, clear_before_import := 
 	var player_names := players_string.split("\n")
 	var imported_player_names: Dictionary[String, int] = {}
 	for player_name in player_names:
-		var striped_name = player_name.strip_edges()
+		var striped_name := player_name.strip_edges()
 		if striped_name == "":
 			continue
 		if imported_player_names.has(striped_name):
-			striped_name = striped_name + str(imported_player_names[striped_name] + 1)
-			imported_player_names[striped_name] += 1
-		else:
-			imported_player_names[striped_name] = 1
+			var existing_name := striped_name
+			striped_name = existing_name + str(imported_player_names[existing_name] + 1)
+			imported_player_names[existing_name] += 1
+		imported_player_names[striped_name] = 1
 		var new_player = Player.new(striped_name)
 		imported_players.append(new_player)
 	players_imported.emit(imported_players)

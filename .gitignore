@@ -404,3 +404,7 @@ $RECYCLE.BIN/
 ########################
 
 addons/*
+resources/test*.tres
+resources/test*.res
+resources/new_resource.tres
+resources/new_resource.res

@@ -1,11 +1,11 @@
-class_name SwissRoundUI
+class_name TournamentRoundUI
 extends PanelContainer
 
 
 const _MATCH_CONTAINER_UID := "uid://dr0etkq7p23v4"
 const _MATCH_GROUP_UID := "uid://cnw68ot40x1pl"
 
-@export var swiss_round_res: SwissRound
+@export var round_res: TournamentRound
 
 var grid_column_count: int:
 	set(value):
@@ -28,11 +28,11 @@ var grid_v_seperation: int:
 var _finished_matches: Dictionary[Match, bool] = {}
 
 @onready var round_content_container: VBoxContainer = $RoundContentContainer
-@onready var back_button: Button = $RoundContentContainer/HeaderPanelContainer/SwissRoundHeader/BackButton
-@onready var round_label: Label = $RoundContentContainer/HeaderPanelContainer/SwissRoundHeader/RoundLabel
-@onready var settings_button: Button = $RoundContentContainer/HeaderPanelContainer/SwissRoundHeader/SettingsButton
-@onready var finished_matches_label: Label = $RoundContentContainer/HeaderPanelContainer/SwissRoundHeader/FinishedMatchesLabel
-@onready var next_button: Button = $RoundContentContainer/HeaderPanelContainer/SwissRoundHeader/NextButton
+@onready var back_button: Button = $RoundContentContainer/HeaderPanelContainer/RoundHeader/BackButton
+@onready var round_label: Label = $RoundContentContainer/HeaderPanelContainer/RoundHeader/RoundLabel
+@onready var settings_button: Button = $RoundContentContainer/HeaderPanelContainer/RoundHeader/SettingsButton
+@onready var finished_matches_label: Label = $RoundContentContainer/HeaderPanelContainer/RoundHeader/FinishedMatchesLabel
+@onready var next_button: Button = $RoundContentContainer/HeaderPanelContainer/RoundHeader/NextButton
 @onready var match_group_container: VFlowContainer = $RoundContentContainer/ScrollContainer/MatchGroupContainer
 @onready var next_action_panel_container: PanelContainer = $NextActionPanelContainer
 @onready var close_button: Button = $NextActionPanelContainer/VBoxContainer/CloseButton
@@ -49,7 +49,7 @@ func _ready() -> void:
 
 
 func update() -> void:
-	if not swiss_round_res:
+	if not round_res:
 		push_error("No swiss round resource assigned")
 		return
 	# Ensure the correct elements are visible at ready
@@ -57,9 +57,9 @@ func update() -> void:
 	_set_next_round_button_visiblity()
 	_set_next_action_selection_visible(false)
 	# Set the right text for dynamic labels
-	round_label.text = "Round " + str(swiss_round_res.swiss_round_number)
+	round_label.text = "Round %d"  % round_res.round_number
 	finished_matches_label.text = "Finished Matches: %d / %d" % [
-		_finished_matches.size(), swiss_round_res.matches.size()
+		_finished_matches.size(), round_res.matches.size()
 	]
 	# Remove old match groups
 	while match_group_container.get_child_count() > 0:
@@ -69,24 +69,19 @@ func update() -> void:
 	# Sort matches into match groups so that no station has more than one match
 	# at the same time
 	var match_groups: Dictionary[int, Array] = {} # Array[Match]
-	for match_res in swiss_round_res.matches:
+	for match_res in round_res.matches:
 		var station = match_res.station
-		# find match group that has no match at this station already
-		if match_groups.is_empty():
-			match_groups[1] = [match_res]
+		if match_groups.has(station.group):
+			var group = match_groups[station.group]
+			for other_match in group:
+				if station.number == other_match.station.number:
+					push_error("Station number shouldnt be assigned more then once per group")
+			group.append(match_res)
 		else:
-			var found_group 
-			for group in match_groups.keys():
-				for other_match in match_groups[group]:
-					if station.number == other_match.station.number:
-							break
-					found_group = group
-			if found_group:
-				match_groups[found_group].append(match_res)
-			else:
-				match_groups[match_groups.size() + 1] = [match_res]
+			match_groups[station.group] = [match_res]
+		
 	# Use the match groups dictionary to build match groups and add them to the 
-	# SwissRoundContainer
+	# RoundContainer
 	var match_group := load(_MATCH_GROUP_UID)
 	var match_container := load(_MATCH_CONTAINER_UID)
 	for group_number in match_groups.keys():
@@ -106,8 +101,9 @@ func _add_to_finished_matches(match_res: Match) -> void:
 	_finished_matches[match_res] = true
 	for player in match_res.players:
 		player.update_score(match_res)
+	Global.tournament.save()
 	finished_matches_label.text = "Finished Matches: %d / %d" % [
-		_finished_matches.size(), swiss_round_res.matches.size()
+		_finished_matches.size(), round_res.matches.size()
 	]
 	_set_next_round_button_visiblity()
 
@@ -116,13 +112,14 @@ func _remove_from_finished_matches(match_res: Match) -> void:
 	_finished_matches.erase(match_res)
 	for player in match_res.players:
 		player.undo_score_update(match_res)
+	Global.tournament.save()
 	finished_matches_label.text = "Finished Matches: %d / %d" % [
-		_finished_matches.size(), swiss_round_res.matches.size()
+		_finished_matches.size(), round_res.matches.size()
 	]
 
 
 func _set_next_round_button_visiblity() -> void:
-		var complete: bool = _finished_matches.size() == swiss_round_res.matches.size()
+		var complete: bool = _finished_matches.size() == round_res.matches.size()
 		finished_matches_label.visible = not complete
 		next_button.visible = complete
 

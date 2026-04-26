@@ -38,7 +38,7 @@ func _simulate_swiss_rounds() -> Array[SwissRound]:
 		players.append(player)
 	for i in range(number_of_rounds):
 		var current_round := SwissRound.new(match_size, station_count, special_stations)
-		current_round.swiss_round_number = i + 1
+		current_round.round_number = i + 1
 		current_round.matches = current_round.assign_players_to_matches(players)
 		#var players_to_update: Array = []  
 		var players_for_next_round: Array[Player] = []
@@ -68,7 +68,7 @@ func _print_swiss_round(swiss_round: SwissRound) -> void:
 	var round_seperator := "========================================"
 	var match_seperator := "----------------------------------------"
 	print(round_seperator)
-	print("Swiss Round Nr. " + str(swiss_round.swiss_round_number))
+	print("Swiss Round Nr. " + str(swiss_round.round_number))
 	for match_res in swiss_round.matches:
 		print(match_seperator)
 		if match_res.station.is_special_station:

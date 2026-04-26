@@ -76,3 +76,15 @@ text = "Special Station Name: "
 [node name="SpecialStationNameEdit" type="LineEdit" parent="TournamentSettingsContainer/SpecialStationNameContainer" unique_id=1137393949]
 layout_mode = 2
 size_flags_horizontal = 10
+
+[node name="KOAdvancementContainer" type="HBoxContainer" parent="TournamentSettingsContainer" unique_id=655964949]
+layout_mode = 2
+
+[node name="KOAdvancementLabel" type="Label" parent="TournamentSettingsContainer/KOAdvancementContainer" unique_id=1311561690]
+layout_mode = 2
+text = "KO Advancement Limit : "
+
+[node name="KOAdvancementEdit" type="LineEdit" parent="TournamentSettingsContainer/KOAdvancementContainer" unique_id=1316693346]
+layout_mode = 2
+size_flags_horizontal = 10
+alignment = 1

@@ -1,0 +1,6 @@
+[gd_scene format=3 uid="uid://cl0ywm7nwp0db"]
+
+[ext_resource type="Script" uid="uid://dqyqf6b8w1auv" path="res://scripts/settings_ui.gd" id="1_8srmj"]
+
+[node name="SettingsUI" type="PanelContainer" unique_id=1028429559]
+script = ExtResource("1_8srmj")

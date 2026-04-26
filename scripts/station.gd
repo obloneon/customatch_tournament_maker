@@ -3,4 +3,5 @@ extends Resource
 
 
 @export var number: int = 1
+@export var group: int = 1
 @export var is_special_station: bool = false
