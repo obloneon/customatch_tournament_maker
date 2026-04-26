@@ -24,11 +24,6 @@ offset_right = 40.0
 offset_bottom = 40.0
 theme_override_styles/panel = SubResource("StyleBoxFlat_ynmjr")
 script = ExtResource("1_xpxdt")
-player_list = null
-show_placement = null
-show_wins = null
-show_points = null
-show_oponent_point_average = null
 
 [node name="GridContainer" type="GridContainer" parent="." unique_id=496917256]
 layout_mode = 2

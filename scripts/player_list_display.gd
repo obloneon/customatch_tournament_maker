@@ -15,6 +15,7 @@ const PLAYER_LIST_LABELS_STYLE_BOX_FLAT = preload("uid://vihb6mhogh73")
 @onready var placement_column_label: Label = $GridContainer/PlacementColumnLabel
 @onready var win_column_label: Label = $GridContainer/WinColumnLabel
 @onready var points_column_label: Label = $GridContainer/PointsColumnLabel
+@onready var apo_column_label: Label = $GridContainer/APOColumnLabel
 
 
 func update() -> void:
@@ -33,6 +34,7 @@ func update() -> void:
 	placement_column_label.visible = show_placement
 	win_column_label.visible = show_wins
 	points_column_label.visible = show_points
+	apo_column_label.visible = show_average_opponent_points
 	
 	var list_to_display = player_list.duplicate(true)
 	if show_placement:
