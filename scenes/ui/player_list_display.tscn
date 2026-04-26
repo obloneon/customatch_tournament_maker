@@ -24,12 +24,17 @@ offset_right = 40.0
 offset_bottom = 40.0
 theme_override_styles/panel = SubResource("StyleBoxFlat_ynmjr")
 script = ExtResource("1_xpxdt")
+player_list = null
+show_placement = null
+show_wins = null
+show_points = null
+show_oponent_point_average = null
 
 [node name="GridContainer" type="GridContainer" parent="." unique_id=496917256]
 layout_mode = 2
 theme_override_constants/h_separation = 4
 theme_override_constants/v_separation = 8
-columns = 4
+columns = 5
 
 [node name="PlacementColumnLabel" type="Label" parent="GridContainer" unique_id=1778915088]
 layout_mode = 2
@@ -52,4 +57,10 @@ horizontal_alignment = 1
 layout_mode = 2
 theme_override_styles/normal = ExtResource("2_vf1u5")
 text = "Wins"
+horizontal_alignment = 1
+
+[node name="APOColumnLabel" type="Label" parent="GridContainer" unique_id=1498523122]
+layout_mode = 2
+theme_override_styles/normal = ExtResource("2_vf1u5")
+text = "A.P.O."
 horizontal_alignment = 1

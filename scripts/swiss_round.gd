@@ -1,22 +1,9 @@
 class_name SwissRound
-extends Resource
+extends TournamentRound
 
 
-@export var swiss_round_number: int = 1
-@export var matches: Array[Match]
-@export var match_size: int = Global.tournament_settings.match_size
-@export var station_count = Global.tournament_settings.station_count
-@export var special_stations_count: int = Global.tournament_settings.special_stations
-
-
-func _init(
-	round_match_size: int = Global.tournament_settings.match_size,
-	round_station_count: int = Global.tournament_settings.station_count,
-	round_special_stations_count: int = Global.tournament_settings.special_stations
-) -> void:
-	match_size = round_match_size
-	station_count = round_station_count
-	special_stations_count = round_special_stations_count
+func _init() -> void:
+	round_type = RoundType.SWISS
 
 
 ## Tries to fill all players into matches based on the suitability score calculation. 
@@ -30,8 +17,7 @@ func assign_players_to_matches(players: Array[Player]) -> Array[Match]:
 	var new_matches: Array[Match] = _create_matches(players.size())
 	var total_players = players.size()
 	var total_assigned_players: int = 0
-	# pool creation
-	if swiss_round_number == 1:
+	if round_number == 1:
 		for new_match in new_matches:
 			var needed_players: int = match_size
 			while players.size() > 0 and needed_players > 0:
@@ -63,7 +49,7 @@ func _assign_players_to_matches_without_crossing_pools(players: Array[Player]) -
 	var balanced_matches:Array[Match] = []
 	var player_pools: Dictionary[int, Array] = {} # Array is Array[Player]
 	# pool creation
-	if swiss_round_number == 1:
+	if round_number == 1:
 		player_pools[0] = players.duplicate_deep()
 	else:
 		for player in players:
@@ -87,7 +73,7 @@ func _assign_players_to_matches_without_crossing_pools(players: Array[Player]) -
 			var fill_range: int = min(match_size, player_pool.size())
 			for i in range(fill_range):
 				var fitting_player
-				if swiss_round_number > 1:
+				if round_number > 1:
 					var fitting_index: int = _find_suitable_player_index(empty_match, player_pool)
 					fitting_player = HelperFunctions.swap_pop(player_pool, fitting_index)
 					if fitting_player == null:
@@ -168,34 +154,6 @@ func _assign_players_to_matches_without_crossing_pools(players: Array[Player]) -
 	return balanced_matches
 
 
-## Returns the [Player]s in this match. If non are found then an empty Array is
-## returned instead.
-func get_players() -> Array[Player]:
-	var players_array: Array[Player] = []
-	for swiss_match in matches:
-		if swiss_match == null:
-			continue
-		for player in swiss_match.players:
-			if player != null:
-				players_array.append(player)
-	return players_array
-
-
-func _create_matches(number_of_players: int) -> Array[Match]:
-	var created_matches: Array[Match] = []
-	var needed_matches: int = ceil(float(number_of_players) / match_size)
-	for i in range(needed_matches):
-		var new_match = Match.new()
-		var station = Station.new()
-		# Ensures that stations get assigned corectly even if station count < needed matches
-		station.number = (i % station_count) + 1
-		if station.number <= special_stations_count:
-			station.is_special_station = true
-		new_match.station = station
-		created_matches.append(new_match)
-	return created_matches
-
-
 func _find_suitable_player_index(current_match: Match, player_pool: Array) -> int:
 	var best_idx := -1
 	var best_score := -1
@@ -232,17 +190,3 @@ func _calculate_suitability(player: Player, current_match: Match) -> int:
 	score += max(0, 10 + players_in_match_count - conflicts)
 	score += max(0, 5 + players_in_match_count - point_differential)
 	return score
-
-
-## Returns an error if it fails else returns OK
-func save(save_path: String = "") -> String:
-	if save_path == null or save_path == "":
-		save_path = self.resource_path
-	var error = ResourceSaver.save(self, save_path)
-	if error == OK:
-		print("Successfully saved swiss round %s to %s" % [str(swiss_round_number), save_path])
-		return "OK"
-	else:
-		var error_message = "Failed to save swiss round %s to %s. Error: %s" % [str(swiss_round_number), save_path, error_string(error)]
-		push_error(error_message)
-		return error_message

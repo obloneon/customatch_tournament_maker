@@ -21,6 +21,11 @@ enum DisplayModes {
 @onready var tournament_settings_ui_edit: TournamentSettingsUIEdit = $VboxContainer/ContentContainer/VBoxContainer/TournamentSettingsUIEdit
 
 
+func _ready() -> void:
+	tournament_settings_ui_edit.ko_advancement_container.hide()
+
+
+
 func switch_display_mode(mode: DisplayModes) -> void:
 	match mode:
 		DisplayModes.ACTION_SELECT:

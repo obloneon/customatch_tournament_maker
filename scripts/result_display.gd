@@ -7,3 +7,4 @@ extends PanelContainer
 @onready var player_list_display: PlayerListDisplay = $VboxContainer/ContentContainer/ScrollContainer/PlayerListDisplay
 @onready var new_top_cut_button: Button = $VboxContainer/ContentContainer/VBoxContainer/NextActionPanelContainer/NextActionContainer/NewTopCutButton
 @onready var title_screen_button: Button = $VboxContainer/ContentContainer/VBoxContainer/NextActionPanelContainer/NextActionContainer/TitleScreenButton
+@onready var tournament_settings_ui_edit: TournamentSettingsUIEdit = $VboxContainer/ContentContainer/VBoxContainer/TournamentSettingsUIEdit
